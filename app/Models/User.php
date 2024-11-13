@@ -2,14 +2,26 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Scopes\UserScope;
+use App\Observers\UserObserver;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Accessors, Mutators - нужны для изменения вида данных при получении и обновлении.
+ * https://laravel.su/docs/11.x/eloquent-mutators
+ *
+ * Свойство $appends в Laravel позволяет добавлять атрибуты при конвертировании моделей в массив или JSON
+ */
+#[ObservedBy([UserObserver::class])]
+#[ScopedBy([UserScope::class])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
